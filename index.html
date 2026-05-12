@@ -407,10 +407,46 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
+            position: relative;
+            overflow: hidden;
         }
 
         .join-btn:hover {
             background: #0d9488;
+        }
+
+        .join-btn.joining {
+            background: #0f766e;
+            pointer-events: none;
+        }
+
+        .join-btn .btn-text {
+            transition: opacity 0.3s;
+        }
+
+        .join-btn.joining .btn-text {
+            opacity: 0;
+        }
+
+        .join-btn .btn-loader {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+        }
+
+        .join-btn.joining .btn-loader {
+            display: block;
+        }
+
+        .btn-loader .mini-spinner {
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
         }
 
         .scan-info {
@@ -436,6 +472,60 @@
             display: flex;
             align-items: center;
             gap: 4px;
+        }
+
+        /* Joining overlay - plein écran noir avec loader */
+        .joining-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .joining-overlay.active {
+            display: flex;
+        }
+
+        .joining-overlay .big-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255, 77, 141, 0.2);
+            border-top-color: #ff4d8d;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        .joining-overlay .joining-text {
+            font-size: 16px;
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .joining-overlay .joining-sub {
+            font-size: 12px;
+            color: #555;
+        }
+
+        .joining-overlay .roblox-logo {
+            width: 48px;
+            height: 48px;
+            background: #fff;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #000;
+            font-size: 20px;
+            margin-bottom: 8px;
         }
 
         /* Stats Section */
@@ -626,111 +716,6 @@
             line-height: 1.5;
         }
 
-        /* Modal / Iframe */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .modal-overlay.active {
-            display: flex;
-        }
-
-        .modal-container {
-            width: 100%;
-            max-width: 900px;
-            height: 85vh;
-            background: #111;
-            border-radius: 16px;
-            border: 1px solid #2a2a2a;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .modal-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 12px 16px;
-            border-bottom: 1px solid #1a1a1a;
-            background: #0a0a0a;
-        }
-
-        .modal-title {
-            font-size: 13px;
-            color: #888;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .modal-title .dot {
-            width: 6px;
-            height: 6px;
-            background: #4ade80;
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
-        }
-
-        .modal-close {
-            width: 32px;
-            height: 32px;
-            background: #1a1a1a;
-            border: 1px solid #2a2a2a;
-            border-radius: 8px;
-            color: #888;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-        }
-
-        .modal-iframe {
-            flex: 1;
-            width: 100%;
-            border: none;
-            background: #000;
-        }
-
-        .modal-footer {
-            padding: 10px 16px;
-            border-top: 1px solid #1a1a1a;
-            background: #0a0a0a;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .modal-url {
-            font-size: 11px;
-            color: #555;
-            font-family: monospace;
-        }
-
-        .modal-security {
-            font-size: 10px;
-            color: #4ade80;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
         /* Scrollbar */
         ::-webkit-scrollbar {
             width: 6px;
@@ -805,4 +790,12 @@
     <div class="loading-state" id="loadingState">
         <div class="spinner"></div>
         <div class="loading-text" id="loadingText">Connecting to KR matchmaking nodes...</div>
-        <div class="loading-sub">probing seoul / busan / incheon · est. 1.5s</
+        <div class="loading-sub">probing seoul / busan / incheon · est. 1.5s</div>
+    </div>
+
+    <!-- Result Card -->
+    <div class="result-card" id="resultCard">
+        <div class="result-header">
+            <div class="check-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <p
