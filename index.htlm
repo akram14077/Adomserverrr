@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADMServers — Korean Adopt Me servers</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0a0a0a;
+            color: #e0e0e0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            border-bottom: 1px solid #1a1a1a;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo {
+            width: 32px;
+            height: 32px;
+            background: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #000;
+            font-size: 12px;
+        }
+
+        .brand-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .launch-btn {
+            padding: 8px 16px;
+            border: 1px solid #333;
+            background: transparent;
+            color: #fff;
+            border-radius: 8px;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            padding: 40px 20px 30px;
+        }
+
+        .hero h1 {
+            font-size: 32px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 16px;
+            color: #fff;
+        }
+
+        .hero h1 .highlight {
+            color: #ff4d8d;
+        }
+
+        .hero p {
+            font-size: 15px;
+            color: #888;
+            max-width: 400px;
+            margin: 0 auto 24px;
+            line-height: 1.6;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .btn-primary {
+            padding: 12px 24px;
+            background: #fff;
+            color: #000;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-secondary {
+            padding: 12px 24px;
+            background: transparent;
+            color: #fff;
+            border: 1px solid #333;
+            border-radius: 10px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        /* Search Card */
+        .search-card {
+            background: #111;
+            border: 1px solid #1a1a1a;
+            border-radius: 16px;
+            padding: 30px 20px;
+            max-width: 400px;
+            margin: 0 auto 30px;
+            text-align: center;
+        }
+
+        .search-icon {
+            width: 48px;
+            height: 48px;
+            background: #1a1a1a;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            border: 1px solid #2a2a2a;
+        }
+
+        .search-icon svg {
+            width: 20px;
+            height: 20px;
+            color: #666;
+        }
+
+        .search-card h2 {
+            font-size: 18px;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+
+        .search-card p {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .search-btn {
+            width: 100%;
+            padding: 14px;
+            background: #fff;
+            color: #000;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .search-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .enter-hint {
+            font-size: 11px;
+            color: #444;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        /* Loading State */
+        .loading-state {
+            display: none;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .loading-state.active {
+            display: block;
+        }
+
+        .spinner {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #ff4d8d;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-size: 14px;
+            color: #ccc;
+            margin-bottom: 8px;
+        }
+
+        .loading-sub {
+            font-size: 12px;
+            color: #555;
+        }
+
+        /* Result Card */
+        .result-card {
+            display: none;
+            background: #111;
+            border: 1px solid #1a1a1a;
+            border-radius: 16px;
+            padding: 24px 20px;
+            max-width: 400px;
+            margin: 0 auto 30px;
+        }
+
+        .result-card.active {
+            display: block;
+        }
+
+        .result-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .check-icon {
+            width: 32px;
+            height: 32px;
+            background: #1a1a1a;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #2a2a2a;
+        }
+
+        .check-icon svg {
+            width: 16px;
+            height: 16px;
+            color: #ff4d8d;
+        }
+
+        .result-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .result-sub {
+            font-size: 11px;
+            color: #666;
+        }
+
+        .top-pick {
+            display: inline-block;
+            padding: 4px 10px;
+            background: rgba(255, 77, 141, 0.15);
+            color: #ff4d8d;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+
+        .server-info {
+            background: #0a0a0a;
+            border: 1px solid #1a1a1a;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .server-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            background: #4ade80;
+            border-radius: 50%;
+        }
+
+        .server-location {
+            font-size: 10px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .server-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 2px;
+        }
+
+        .flag {
+            font-size: 20px;
+        }
+
+        .server-id {
+            font-size: 12px;
+            color: #555;
+            margin-bottom: 16px;
+        }
+
+        .place-id {
+            font-size: 11px;
+            color: #444;
+            margin-bottom: 16px;
+        }
+
+        .place-id-label {
+            color: #555;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            border-top: 1px solid #1a1a1a;
+            padding-top: 16px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 10px;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .stat-value.ping {
+            color: #4ade80;
+        }
+
+        .stat-unit {
+            font-size: 11px;
+            color: #555;
+            font-weight: 400;
+        }
+
+        .join-btn {
+            width: 100%;
+            padding: 14px;
+            background: #14b8a6;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .join-btn:hover {
+            background: #0d9488;
+        }
+
+        .scan-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid #1a1a1a;
+        }
+
+        .scan-info-text {
+            font-size: 11px;
+            color: #444;
+        }
+
+        .rescan-btn {
+            font-size: 11px;
+            color: #666;
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Stats Section */
+        .stats-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            max-width: 400px;
+            margin: 0 auto 30px;
+            padding: 0 20px;
+        }
+
+        .stat-block {
+            text-align: left;
+        }
+
+        .stat-block-label {
+            font-size: 10px;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .stat-block-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .stat-block-unit {
+            font-size: 12px;
+            color: #555;
+            font-weight: 400;
+        }
+
+        /* Features */
+        .features-section {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 0 20px 40px;
+        }
+
+        .features-title {
+            font-size: 11px;
+            color: #ff4d8d;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .features-heading {
+            font-size: 22px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .features-desc {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        .feature-item {
+            display: flex;
+            gap: 14px;
+            margin-bottom: 20px;
+            padding: 16px;
+            background: #111;
+            border: 1px solid #1a1a1a;
+            border-radius: 12px;
+        }
+
+        .feature-icon {
+            width: 36px;
+            height: 36px;
+            background: rgba(255, 77, 141, 0.1);
+            border: 1px solid rgba(255, 77, 141, 0.2);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .feature-icon svg {
+            width: 16px;
+            height: 16px;
+            color: #ff4d8d;
+        }
+
+        .feature-content h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .feature-content p {
+            font-size: 12px;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        /* How it works */
+        .how-it-works {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 0 20px 40px;
+        }
+
+        .pipeline-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .pipeline-desc {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        .steps {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .step-num {
+            font-size: 16px;
+            color: #555;
+            width: 20px;
+        }
+
+        .step-text {
+            font-size: 14px;
+            color: #ccc;
+        }
+
+        .step-card {
+            background: #111;
+            border: 1px solid #1a1a1a;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .step-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .step-card-label {
+            font-size: 10px;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .step-card-time {
+            font-size: 11px;
+            color: #ff4d8d;
+        }
+
+        .step-card h3 {
+            font-size: 15px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 6px;
+        }
+
+        .step-card p {
+            font-size: 12px;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        /* Modal / Iframe */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-container {
+            width: 100%;
+            max-width: 900px;
+            height: 85vh;
+            background: #111;
+            border-radius: 16px;
+            border: 1px solid #2a2a2a;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            border-bottom: 1px solid #1a1a1a;
+            background: #0a0a0a;
+        }
+
+        .modal-title {
+            font-size: 13px;
+            color: #888;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .modal-title .dot {
+            width: 6px;
+            height: 6px;
+            background: #4ade80;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 8px;
+            color: #888;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .modal-iframe {
+            flex: 1;
+            width: 100%;
+            border: none;
+            background: #000;
+        }
+
+        .modal-footer {
+            padding: 10px 16px;
+            border-top: 1px solid #1a1a1a;
+            background: #0a0a0a;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-url {
+            font-size: 11px;
+            color: #555;
+            font-family: monospace;
+        }
+
+        .modal-security {
+            font-size: 10px;
+            color: #4ade80;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0a0a0a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #2a2a2a;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="logo-section">
+            <div class="logo">AM</div>
+            <span class="brand-name">ADMServers</span>
+        </div>
+        <button class="launch-btn">
+            Launch
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Hero -->
+    <div class="hero">
+        <h1>The fastest<br>way to land in a<br><span class="highlight">Korean Adopt Me</span><br>server.</h1>
+        <p>ADMServers indexes every active Korean server and ranks them by ping, headroom, and uptime – so you join the deepest-trading region of Adopt Me on the first try.</p>
+        <div class="hero-buttons">
+            <button class="btn-primary" onclick="startScan()">
+                Find Korean server
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+            </button>
+            <button class="btn-secondary" onclick="scrollToHow()">How it works</button>
+        </div>
+    </div>
+
+    <!-- Search Card -->
+    <div class="search-card" id="searchCard">
+        <div class="search-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/>
+                <path d="m21 21-4.35-4.35"/>
+            </svg>
+        </div>
+        <h2>Find a Korean server</h2>
+        <p>Scan all active Korean servers on Adopt Me and rank them by ping, headroom, and uptime — we'll surface the best match.</p>
+        <button class="search-btn" id="searchBtn" onclick="startScan()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/>
+                <path d="m21 21-4.35-4.35"/>
+            </svg>
+            Find Korean server
+        </button>
+        <div class="enter-hint">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"/>
+            </svg>
+            Enter to scan
+        </div>
+    </div>
+
+    <!-- Loading State -->
+    <div class="loading-state" id="loadingState">
+        <div class="spinner"></div>
+        <div class="loading-text" id="loadingText">Connecting to KR matchmaking nodes...</div>
+        <div class="loading-sub">probing seoul / busan / incheon · est. 1.5s</
